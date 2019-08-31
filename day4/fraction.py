@@ -99,3 +99,9 @@ class Fraction:
         f1 = self.num / self.den
         f2 = other.num / other.den
         return f1 < f2
+
+    def shownum(self):
+        return self.num
+        
+    def showden(self):
+        return self.den
