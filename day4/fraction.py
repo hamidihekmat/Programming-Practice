@@ -32,16 +32,28 @@ class Fraction:
         '''
         return '{}/{}'.format(str(self.num), str(self.den))
 
-    def __add__(self, otherfraction):
+    def __add__(self, other):
         '''
         __add__ method allows fractions to be added
         f1.__add__(f2)
         '''
-        newnum = self.num * otherfraction.den + self.den * otherfraction.num
-        newden = self.den * otherfraction.den
-        newden = self.den * otherfraction.den
+        newnum = self.num * other.den + self.den * other.num
+        newden = self.den * other.den
+        newden = self.den * other.den
         common = self.gcd(newnum,newden)
         # we return a fraction object with the numerator and denominator
+        return Fraction(newnum//common,newden//common)
+
+    def __mul__(self, other):
+        newnum = self.num * other.num
+        newden = self.den * other.den
+        common = self.gcd(newnum, newden)
+        return Fraction(newnum//common,newden//common)
+
+    def __truediv__(self, other):
+        newnum = self.num * other.den
+        newden = self.den * other.num
+        common = self.gcd(newnum, newden)
         return Fraction(newnum//common,newden//common)
 
     def __eq__(self, other):
@@ -49,15 +61,19 @@ class Fraction:
         secondnum = other.num * self.den
         return firstnum == secondnum
 
-    def __le__(self, other):
-        f1 = self.num / self.den
-        f2 = other.num / other.den
-        return f1 < f2
-
     def __ne__(self, other):
         firstnum = self.num * other.den
         secondnum = other.num * self.den
         return firstnum != secondnum
+
+    def __le__(self, other):
+        f1 = self.num / self.den
+        f2 = other.num / other.den
+        return f1 < f2
+    def __ge__(self, other):
+        f1 = self.num / self.den
+        f2 = other.num / other.den
+        return f1 > f2
 
     def __gt__(self, other):
         f1 = self.num / self.den
@@ -70,13 +86,17 @@ class Fraction:
         return f1 < f2
 
 
+
 myf = Fraction(4,1)
-myf2 = Fraction(4,1)
+myf2 = Fraction(2,1)
 print(myf + myf2)
-print(myf == myf2) # return true
-print(myf >= myf2) # return false since they both are equals
+#print(myf == myf2) # return true
+#print(myf >= myf2) # return false since they both are equals
 print(myf != myf2) # return false -> since they both are equals
-print(myf > myf2)
-print(myf < myf2)
+#print(myf > myf2)
+#print(myf < myf2)
+print(myf * myf2)
+print(myf / myf2)
+
 # Progress
 # need to add the add method
