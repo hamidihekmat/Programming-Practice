@@ -44,6 +44,18 @@ class Fraction:
         # we return a fraction object with the numerator and denominator
         return Fraction(newnum//common,newden//common)
 
+    def __sub__(self, other):
+        '''
+        __add__ method allows fractions to be subtracted
+        f1.__sub__(f2)
+        '''
+        newnum = self.num * other.den - self.den * other.num
+        newden = self.den * other.den
+        newden = self.den * other.den
+        common = self.gcd(newnum,newden)
+        # we return a fraction object with the numerator and denominator
+        return Fraction(newnum//common,newden//common)
+
     def __mul__(self, other):
         newnum = self.num * other.num
         newden = self.den * other.den
@@ -97,6 +109,7 @@ print(myf != myf2) # return false -> since they both are equals
 #print(myf < myf2)
 print(myf * myf2)
 print(myf / myf2)
+print(myf - myf2)
 
 # Progress
 # need to add the add method
