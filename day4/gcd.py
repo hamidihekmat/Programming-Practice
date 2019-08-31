@@ -36,7 +36,7 @@ def gcd(num, den):
         g = m
         m = n
         n = g % m
-    return int(num/GCD), int(den/GCD)
+    return GCD
 
 
 

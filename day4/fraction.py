@@ -1,7 +1,7 @@
 
 
 
-class Fraction(object):
+class Fraction:
     def __init__(self, num, den):
         '''
         Constructors for the class fraction -> numerator
@@ -9,6 +9,21 @@ class Fraction(object):
         '''
         self.num = num
         self.den = den
+
+    def gcd(self,num, den):
+        GCD = 0
+        l = [num, den]
+        g = max(l)
+        m = min(l)
+        n = g % m
+        if n == 0:
+            GCD = m
+        while n != 0:
+            GCD = n
+            g = m
+            m = n
+            n = g % m
+        return GCD
 
     def __str__(self):
         '''
@@ -24,15 +39,44 @@ class Fraction(object):
         '''
         newnum = self.num * otherfraction.den + self.den * otherfraction.num
         newden = self.den * otherfraction.den
+        newden = self.den * otherfraction.den
+        common = self.gcd(newnum,newden)
         # we return a fraction object with the numerator and denominator
-        return Fraction(newnum, newden)
+        return Fraction(newnum//common,newden//common)
+
+    def __eq__(self, other):
+        firstnum = self.num * other.den
+        secondnum = other.num * self.den
+        return firstnum == secondnum
+
+    def __le__(self, other):
+        f1 = self.num / self.den
+        f2 = other.num / other.den
+        return f1 < f2
+
+    def __ne__(self, other):
+        firstnum = self.num * other.den
+        secondnum = other.num * self.den
+        return firstnum != secondnum
+
+    def __gt__(self, other):
+        f1 = self.num / self.den
+        f2 = other.num / other.den
+        return f1 > f2
+
+    def __lt__(self, other):
+        f1 = self.num / self.den
+        f2 = other.num / other.den
+        return f1 < f2
 
 
-
-
-myf = Fraction(1,4)
-myf2 = Fraction(1,2)
+myf = Fraction(4,1)
+myf2 = Fraction(4,1)
 print(myf + myf2)
-
+print(myf == myf2) # return true
+print(myf >= myf2) # return false since they both are equals
+print(myf != myf2) # return false -> since they both are equals
+print(myf > myf2)
+print(myf < myf2)
 # Progress
 # need to add the add method
