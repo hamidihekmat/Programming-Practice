@@ -1,6 +1,9 @@
 
 
-
+'''
+@auth: Hekmat Hamidi
+@purpose: To create and undestand how OOP works in python
+'''
 class Fraction:
     def __init__(self, num, den):
         '''
@@ -96,20 +99,3 @@ class Fraction:
         f1 = self.num / self.den
         f2 = other.num / other.den
         return f1 < f2
-
-
-
-myf = Fraction(4,1)
-myf2 = Fraction(2,1)
-print(myf + myf2)
-#print(myf == myf2) # return true
-#print(myf >= myf2) # return false since they both are equals
-print(myf != myf2) # return false -> since they both are equals
-#print(myf > myf2)
-#print(myf < myf2)
-print(myf * myf2)
-print(myf / myf2)
-print(myf - myf2)
-
-# Progress
-# need to add the add method
