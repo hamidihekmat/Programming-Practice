@@ -1,9 +1,6 @@
 import pygame
 import random
-
-# settings
-WHITE = (255, 255, 255)
-BLACK = (0, 0 ,0)
+from settings import *
 
 class Game:
     def __init__(self, w, h, fps=30):
