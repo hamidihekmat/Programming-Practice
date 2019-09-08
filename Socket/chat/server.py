@@ -48,5 +48,3 @@ PORT = 8888
 ADDRESS = (HOST, PORT)
 
 s = Server(ADDRESS).await_connection()
-
-# left off at client broadcast loop -> needs a fix

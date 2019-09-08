@@ -6,17 +6,7 @@ class Client:
     def __init__(self, ADDRESS):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.connect(ADDRESS)
-        # this shouldnt be in the while loop -> the trhead itself should be awhile loop (clean up code)
-        # keeps creating new threads this should be the case
-        '''
-        while True:
-            self.message = self.server.recv(1024)
-            receive_thread = threading.Thread(target=self.receive_message, args=(self.message,))
-            send_message = threading.Thread(target=self.send_message)
-            receive_thread.start()
-            send_message.start()
-            print(threading.active_count())
-        '''
+
 
     def receive_message(self):
         '''
