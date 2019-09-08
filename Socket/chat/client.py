@@ -32,7 +32,7 @@ class Client:
         constantly send messages
         '''
         while True:
-            message = bytes(input('') + '\n', 'utf-8')
+            message = bytes(input(''), 'utf-8')
             self.server.send(message)
 
     def start(self):
