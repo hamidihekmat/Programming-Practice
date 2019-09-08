@@ -28,7 +28,7 @@ class Server:
         '''
         handle receiving and sending messages
         '''
-        welcome = bytes('Welcome to the chat!')
+        welcome = bytes('Welcome to the chat!', 'utf-8')
         client.sendall(welcome)
         while True:
             message = client.recv(1024)
@@ -40,7 +40,7 @@ class Server:
         broadcast messages to other clients
         '''
         for client in clients:
-            client.sendall(message)
+            client.send(message)
 
 
 HOST = '127.0.0.1'
