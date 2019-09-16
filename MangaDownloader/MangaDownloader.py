@@ -26,7 +26,7 @@ class MangaDownloader:
         max_page = int(pages[-1])
 
         pages = []
-        for page in range(max_page):
+        for page in range(1, max_page + 1):
             pages.append(self.mangaLink + '/{}'.format(page))
         return pages
 
