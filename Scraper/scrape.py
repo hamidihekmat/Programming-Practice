@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-
-link = 'https://www.mangareader.net/dr-stone/1'
+from threading import Thread
+link = 'https://www.mangareader.net/one-piece/955'
 
 headers = {
 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36'
@@ -54,6 +54,26 @@ def create_file(images):
 
 
 
-stone = get_pages(link, max_page)
-list_image = get_images(stone)
-create_file(list_image)
+
+def download_images(image, filename):
+    image = requests.get(image).content
+    with open(filename, 'wb') as img:
+        img.write(image)
+    print('{} is done downloading!'.format(filename))
+
+
+def thread_download(list_image):
+    counter = 1
+    for image in list_image:
+        file_name = 'manga{}.jpg'.format(counter)
+        t = Thread(target=download_images, args=[image, file_name])
+        t.start()
+        counter += 1
+
+
+all_pages = get_pages(link, max_page)
+list_image = get_images(all_pages)
+#create_file(list_image)
+thread_download(list_image)
+
+# concurrently download managa pages
