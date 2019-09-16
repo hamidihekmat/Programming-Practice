@@ -82,4 +82,4 @@ class MangaDownloader:
 # Example donwload
 
 one_piece = 'https://www.mangareader.net/hunter-x-hunter/4'
-MangaDownloader(one_piece).createFile()
+MangaDownloader(one_piece).batchDownload()
