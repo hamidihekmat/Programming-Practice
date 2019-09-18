@@ -17,7 +17,7 @@ class MangaDownloader:
         }
         self.mangaLink = mangaLink
         self.manga = requests.get(self.mangaLink, headers=self.headers).content
-        self.pages = self.get_pages()
+        self.pages = self.getPages()
         self.title = self.setTitle()
 
     def setTitle(self):
@@ -26,7 +26,7 @@ class MangaDownloader:
         return str(title)
 
 
-    def get_pages(self):
+    def getPages(self):
         '''
         Returns list of pages
         '''
@@ -41,7 +41,7 @@ class MangaDownloader:
             pages.append(self.mangaLink + '/{}'.format(page))
         return pages
 
-    def get_images(self):
+    def getImages(self):
         '''
         Returns list of image links
         '''
@@ -59,7 +59,7 @@ class MangaDownloader:
         '''
         Creates a file containing the img links
         '''
-        images = self.get_images()
+        images = self.getImages()
         with open(self.title +".txt",'a') as f:
             for img in images:
                 f.write(img +'\n')
@@ -79,7 +79,7 @@ class MangaDownloader:
         '''
         Downloads all the pages for the given chapter
         '''
-        images = self.get_images()
+        images = self.getImages()
         counter = 1
         for image in images:
             file_name = 'manga{}.jpg'.format(counter)
@@ -111,5 +111,7 @@ class MangaDownloader:
 
 # Example donwload
 
-one_piece = 'https://www.mangareader.net/dr-stone/17'
-MangaDownloader(one_piece).makePDF()
+drStone = 'https://www.mangareader.net/dragon-ball/1'
+MangaDownloader(drStone).makePDF()
+# MangaDownloader(drStone).batchDownload()
+# MangaDownloader(drStone).createFile()
