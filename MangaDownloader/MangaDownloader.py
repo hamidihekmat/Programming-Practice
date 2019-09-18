@@ -1,4 +1,7 @@
 import requests
+import os
+import io
+import img2pdf
 from bs4 import BeautifulSoup
 from threading import Thread
 
@@ -15,6 +18,13 @@ class MangaDownloader:
         self.mangaLink = mangaLink
         self.manga = requests.get(self.mangaLink, headers=self.headers).content
         self.pages = self.get_pages()
+        self.title = self.setTitle()
+
+    def setTitle(self):
+        soup = BeautifulSoup(self.manga, 'html.parser')
+        title = soup.find(class_='c4').get_text().strip()
+        return str(title)
+
 
     def get_pages(self):
         '''
@@ -22,6 +32,7 @@ class MangaDownloader:
         '''
         soup = BeautifulSoup(self.manga, 'html.parser')
         menu = soup.find(id='pageMenu').get_text()
+        title = soup.find(class_='c4').get_text().strip()
         pages = (menu.split())
         max_page = int(pages[-1])
 
@@ -49,7 +60,7 @@ class MangaDownloader:
         Creates a file containing the img links
         '''
         images = self.get_images()
-        with open('chapters.txt','a') as f:
+        with open(self.title +".txt",'a') as f:
             for img in images:
                 f.write(img +'\n')
 
@@ -77,9 +88,28 @@ class MangaDownloader:
             t.join()
             counter += 1
 
+    def makePDF(self):
+        print(self.title)
+        self.batchDownload()
+
+        # get list image names
+        imagelist = []
+        for image in os.listdir('.'):
+            if image.endswith('.jpg'):
+                imagelist.append(image)
+        for i in range(len(imagelist)):
+            imagelist[i] = "manga{}.jpg".format(i+1)
+
+        # write the pdf file
+        with open(self.title+".pdf", "wb") as f, io.BytesIO() as output:
+            f.write(img2pdf.convert(imagelist))
+        # remove images
+        for image in imagelist:
+            os.remove(image)
+
 
 
 # Example donwload
 
-one_piece = 'https://www.mangareader.net/hunter-x-hunter/4'
-MangaDownloader(one_piece).batchDownload()
+one_piece = 'https://www.mangareader.net/dr-stone/17'
+MangaDownloader(one_piece).makePDF()
