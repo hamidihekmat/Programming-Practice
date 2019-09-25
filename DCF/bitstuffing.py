@@ -1,7 +1,16 @@
 
 #!/usr/bin/env python
 
+
+'''
+@author: Hekmat Hamidi
+'''
+
+
 def stringbits(bits):
+    '''
+    returns formated bits
+    '''
     n_bits = ''
     for bit in bits:
         n_bits += str(bit)
@@ -9,6 +18,9 @@ def stringbits(bits):
 
 
 def bitstuffing(bits):
+    '''
+    returns stuffed bits
+    '''
     counter = 0
     for bit in range(len(bits)):
         if counter == 5:
@@ -21,6 +33,9 @@ def bitstuffing(bits):
     return bits
 
 def framing(stuffed):
+    '''
+    returns frane
+    '''
     frame = '01111110'
     for bit in stuffed:
         frame+= str(bit)
