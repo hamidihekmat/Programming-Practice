@@ -32,7 +32,7 @@ class Client:
         thread2.start()
 
 
-HOST = '127.0.0.1'
+HOST = '23.96.14.40'
 PORT = 8888
 ADDRESS = (HOST, PORT)
 
