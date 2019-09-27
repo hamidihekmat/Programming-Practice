@@ -1,6 +1,8 @@
 import requests
 import os
-import io
+import math
+from os import system
+import io, time, asyncio
 import img2pdf
 from bs4 import BeautifulSoup
 from threading import Thread
@@ -19,6 +21,7 @@ class MangaDownloader:
         self.manga = requests.get(self.mangaLink, headers=self.headers).content
         self.pages = self.getPages()
         self.title = self.setTitle()
+        self.downloads = 0
 
     def setTitle(self):
         soup = BeautifulSoup(self.manga, 'html.parser')
@@ -69,30 +72,55 @@ class MangaDownloader:
         '''
         Downloads image (page) from a link
         '''
-        image = requests.get(image).content
-        with open(filename, 'wb') as img:
-            img.write(image)
-        print('{} is done downloading!'.format(filename))
+        running = True
+        tries = 4
+        while running:
+            try:
+                image = requests.get(image).content
+                with open(filename, 'wb') as img:
+                    img.write(image)
+                    time.sleep(1)
+                    running = False
+            except:
+                running = True
+                tries -= 1
+                if tries == 0:
+                    running = False
 
+        return True #print('{} is done downloading!'.format(filename))
 
-    def batchDownload(self):
+    async def batchDownload(self):
         '''
         Downloads all the pages for the given chapter
         '''
-        images = self.getImages()
-        counter = 1
-        for image in images:
-            file_name = 'manga{}.jpg'.format(counter)
-            t = Thread(target=self.imageDownload, args=[image, file_name])
-            t.start()
-            t.join()
-            counter += 1
-
-    def makePDF(self):
         print(self.title)
-        self.batchDownload()
+        self.images = []
+        counter = 1
+        amt = 2
+        for i in range(1, amt):
+            t = self.getImages()
+            for j in t:
+                l = len(t) * amt
+                print("Download progress: "+self.loading(l, counter))
+                counter += 1
+                self.images.append(j)
+        counter = 1
+        threads = []
+        for image in self.images:
+            file_name = 'manga{}.jpg'.format(counter)
+            t = (Thread(target=self.imageDownload, args=[image, file_name]))
+            threads.append(t)
 
-        # get list image names
+            counter += 1
+        for thread in threads:
+            thread.start()
+            self.downloads +=1
+            print("Writing progress: "+self.loading(len(self.images), self.downloads))
+        await asyncio.sleep(5)
+        return "hi"
+
+
+    def scan(self):
         imagelist = []
         for image in os.listdir('.'):
             if image.endswith('.jpg'):
@@ -107,11 +135,30 @@ class MangaDownloader:
         for image in imagelist:
             os.remove(image)
 
+    def test(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(self.batchDownload())
+        time.sleep(1)
+        self.scan()
+        print("Done")
+
+    def loading(self, size, amount):
+        system('clear')
+        sr = "["
+        state = math.floor((amount/size*100)/5)
+        for i in range(state):
+            sr = sr+"#"
+        for i in range(20-state):
+            sr = sr+" "
+        sr = sr+"]"
+        sr = '{} %{}'.format(sr, int((amount/size*100)))
+        return sr
 
 
 # Example donwload
 
-drStone = 'https://www.mangareader.net/dragon-ball/1'
-MangaDownloader(drStone).makePDF()
+naruto1 = 'https://www.mangareader.net/bleach/4'
+MangaDownloader(naruto1).test()
 # MangaDownloader(drStone).batchDownload()
 # MangaDownloader(drStone).createFile()
