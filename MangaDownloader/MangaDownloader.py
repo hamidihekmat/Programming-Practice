@@ -2,20 +2,22 @@ import requests
 import os
 import math
 from os import system
-import io, time, asyncio
+import io
+import time
+import asyncio
 import img2pdf
 from bs4 import BeautifulSoup
 from threading import Thread
-
 
 
 class MangaDownloader:
     '''
     Download manga chapters from (https://www.mangareader.net)
     '''
+
     def __init__(self, mangaLink):
         self.headers = {
-        'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36'
         }
         self.mangaLink = mangaLink
         self.manga = requests.get(self.mangaLink, headers=self.headers).content
@@ -27,7 +29,6 @@ class MangaDownloader:
         soup = BeautifulSoup(self.manga, 'html.parser')
         title = soup.find(class_='c4').get_text().strip()
         return str(title)
-
 
     def getPages(self):
         '''
@@ -63,10 +64,9 @@ class MangaDownloader:
         Creates a file containing the img links
         '''
         images = self.getImages()
-        with open(self.title +".txt",'a') as f:
+        with open(self.title + ".txt", 'a') as f:
             for img in images:
-                f.write(img +'\n')
-
+                f.write(img + '\n')
 
     def imageDownload(self, image, filename):
         '''
@@ -87,7 +87,7 @@ class MangaDownloader:
                 if tries == 0:
                     running = False
 
-        return True #print('{} is done downloading!'.format(filename))
+        return True  # print('{} is done downloading!'.format(filename))
 
     async def batchDownload(self):
         '''
@@ -114,11 +114,11 @@ class MangaDownloader:
             counter += 1
         for thread in threads:
             thread.start()
-            self.downloads +=1
-            print("Writing progress: "+self.loading(len(self.images), self.downloads))
+            self.downloads += 1
+            print("Writing progress: " +
+                  self.loading(len(self.images), self.downloads))
         await asyncio.sleep(5)
         return "hi"
-
 
     def scan(self):
         imagelist = []
